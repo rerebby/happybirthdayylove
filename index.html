@@ -14,8 +14,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: none;
     text-align: center;
+    cursor: none;
   }
 
   #text {
@@ -41,17 +41,20 @@
 <div id="text">klik di mana aja yaa...</div>
 <div id="cursor"></div>
 
-<audio id="bgm" loop>
+<!-- AUDIO -->
+<audio id="bgm" preload="auto" loop>
   <source src="kotainitaksamatanpamu(1).mp3" type="audio/mpeg">
 </audio>
 
 <script>
+/* CURSOR */
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
   cursor.style.top = e.clientY + 'px';
 });
 
+/* TEKS */
 const phrases = [
   "Happy Birthday sayangkuu",
   "sekarang ulang tahun yang ke berapa yaaa?",
@@ -96,31 +99,36 @@ const textDiv = document.getElementById("text");
 const audio = document.getElementById("bgm");
 
 let index = 0;
-let audioPlayed = false;
+let started = false;
 
-function typeSentence(sentence, i = 0) {
-  if (i < sentence.length) {
-    textDiv.innerHTML += sentence.charAt(i);
-    setTimeout(() => typeSentence(sentence, i + 1), 40);
+function typeText(text, i = 0) {
+  if (i < text.length) {
+    textDiv.innerHTML += text.charAt(i);
+    setTimeout(() => typeText(text, i + 1), 40);
   }
 }
 
-function showNextPhrase() {
+function showNext() {
   textDiv.innerHTML = "";
-  typeSentence(phrases[index]);
+  typeText(phrases[index]);
   index = (index + 1) % phrases.length;
 }
 
+/* KLIK PERTAMA = AUDIO + TEKS */
 document.body.addEventListener("click", () => {
-  if (!audioPlayed) {
-    audio.play();
-    audioPlayed = true;
+  if (!started) {
+    audio.muted = false;
+    audio.volume = 1;
+    audio.play().catch(() => {});
+    started = true;
   }
-  showNextPhrase();
+  showNext();
 });
 </script>
 
 </body>
 </html>
+
+
 
 
