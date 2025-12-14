@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: black;
+    color: white;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: none;
+    text-align: center;
+  }
+
+  #text {
+    font-size: 24px;
+    max-width: 80%;
+    line-height: 1.6;
+  }
+
+  #cursor {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+</style>
+</head>
+
+<body>
+
+<div id="text">klik di mana aja yaa...</div>
+<div id="cursor"></div>
+
+<audio id="bgm" loop>
+  <source src="kotainitaksamatanpamu.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
+const phrases = [
+  "Happy Birthday sayangkuu",
+  "sekarang ulang tahun yang ke berapa yaaa?",
+  "udah cukup umur tuh buat nikahin akuu",
+  "bercandaaa",
+  "semogaa panjang umurr...",
+  "sehat selaluu...",
+  "semoga semua impian kaka tercapai yaa...",
+  "dan semoga di umur kaka yang sekarang sampai seterusnya",
+  "bisa lebih dewasa lagi...",
+  "harus bisa jaga dirii",
+  "semangatt yaa kuliah nya",
+  "semogaa semua urusan kaka dimudahkan",
+  "aamiin...",
+  "gimana tahun ini?",
+  "bahagia ngga?",
+  "semoga hari hari kaka ditahun depan lebih bahagia lagi yaa",
+  "walaupun tanpa aku",
+  "tapi semoga kita masih sama sama sampai seterusnyaa",
+  "kaka jangan keseringan main game yaa",
+  "nanti kalau tangannya sakit ijab kabul sama papa aku gimana?",
+  "tapi...",
+  "aku bingung deh sama asronot",
+  "soalnya mereka harus pergi ke luar angkasa buat liat dunia",
+  "padahal aku bisa liat duniaku cuma liat kaka ajaaa",
+  "kaka waktu kecil suka nonton doraemon ngga?",
+  "doraemon kan bisa ngeluarin apa aja dari kantongnya",
+  "tapi gabisa ngeluarin kaka dari pikiran akuu hihii",
+  "cara ngeja kata menu itu gimana ya ka?",
+  "me",
+  "n",
+  "u ngga sih?",
+  "oiyaaa",
+  "makasi ya kaka...",
+  "udah sempatin buat ngobrol sama aku walaupun sibukk",
+  "makasii udah selalu ada buat akuu",
+  "i love u...",
+  "so much"
+];
+
+const textDiv = document.getElementById("text");
+const audio = document.getElementById("bgm");
+
+let index = 0;
+let audioPlayed = false;
+
+function typeSentence(sentence, i = 0) {
+  if (i < sentence.length) {
+    textDiv.innerHTML += sentence.charAt(i);
+    setTimeout(() => typeSentence(sentence, i + 1), 40);
+  }
+}
+
+function showNextPhrase() {
+  textDiv.innerHTML = "";
+  typeSentence(phrases[index]);
+  index = (index + 1) % phrases.length;
+}
+
+document.body.addEventListener("click", () => {
+  if (!audioPlayed) {
+    audio.play();
+    audioPlayed = true;
+  }
+  showNextPhrase();
+});
+</script>
+
+</body>
+</html>
