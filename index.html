@@ -1,60 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Happy Birthday</title>
-
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    background: black;
-    color: white;
-    font-family: 'Courier New', monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    cursor: none;
-  }
-
-  #text {
-    font-size: 24px;
-    max-width: 80%;
-    line-height: 1.6;
-  }
-
-  #cursor {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-  }
-</style>
-</head>
-
-<body>
-
-<div id="text">klik di mana aja yaa...</div>
-<div id="cursor"></div>
-
-<!-- AUDIO -->
-<audio id="bgm" preload="auto" loop>
-  <source src="kotainitaksamatanpamu(1).mp3" type="audio/mpeg">
-</audio>
-
 <script>
-/* CURSOR */
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
   cursor.style.top = e.clientY + 'px';
 });
 
-/* TEKS */
 const phrases = [
   "Happy Birthday sayangkuu",
   "sekarang ulang tahun yang ke berapa yaaa?",
@@ -99,12 +49,12 @@ const textDiv = document.getElementById("text");
 const audio = document.getElementById("bgm");
 
 let index = 0;
-let started = false;
+let audioUnlocked = false;
 
-function typeText(text, i = 0) {
-  if (i < text.length) {
-    textDiv.innerHTML += text.charAt(i);
-    setTimeout(() => typeText(text, i + 1), 40);
+function typeText(txt, i = 0) {
+  if (i < txt.length) {
+    textDiv.innerHTML += txt.charAt(i);
+    setTimeout(() => typeText(txt, i + 1), 40);
   }
 }
 
@@ -114,20 +64,24 @@ function showNext() {
   index = (index + 1) % phrases.length;
 }
 
-/* KLIK PERTAMA = AUDIO + TEKS */
+/* klik untuk unlock audio & ganti teks */
 document.body.addEventListener("click", () => {
-  if (!started) {
+  if (!audioUnlocked) {
     audio.muted = false;
     audio.volume = 1;
-    audio.play().catch(() => {});
-    started = true;
+
+    audio.play().then(() => {
+      console.log("Audio sudah diputar setelah klik.");
+    }).catch(err => {
+      console.warn("Audio gagal diputar:", err);
+    });
+
+    audioUnlocked = true;
   }
+  
   showNext();
 });
 </script>
-
-</body>
-</html>
 
 
 
